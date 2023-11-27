@@ -27,6 +27,7 @@ public class GameOfLife {
             Thread.sleep(400);
         }
     }
+
     private static void viewField() throws IOException, InterruptedException {
         if (osName.contains("Windows")) {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -42,6 +43,7 @@ public class GameOfLife {
         }
         System.out.println();
     }
+
     private static void nextGeneration() {
         char[][] newField = new char[height][width];
         for (int i = 0; i < height; i++) {
@@ -71,6 +73,7 @@ public class GameOfLife {
             gameField = newField;
         }
     }
+
     private static int getNumberAliveNeighbors(int y, int x) {
         int aliveNeighbors = 0;
         int startX = Math.max((x - 1), 0);
@@ -88,60 +91,26 @@ public class GameOfLife {
         }
         return aliveNeighbors;
     }
+
     private static void fieldInitialization() {
         Scanner scanner = new Scanner(System.in);
 
-        // Инициализация символа живых ячеек
         System.out.print("Введите символ для обозначения живой ячейки: ");
-        String line = scanner.nextLine();
-        if (line.length() > 1) {
-            System.out.println("Введено больше одного символа. Принят '"+line.charAt(0)+"'\n");
-            alive = line.charAt(0);
-        } else if (line.length() == 1) {
-            alive = line.charAt(0);
-        } else {
-            System.out.println("Не введен ни один символ. Используется символ по умолчанию '*'\n");
-        }
+        setAliveChar(scanner.nextLine());
 
-        // Инициализация поля
         System.out.print("Введите ширину игрового поля (>3): ");
-        try {
-            line = scanner.nextLine();
-            int num = Integer.parseInt(line);
-            if (num < 4) {
-                throw new RuntimeException();
-            }
-            width = num;
-        } catch (Exception e) {
-            System.out.println("Введено недопустимое значение. Ширина по умолчанию 20\n");
-        }
+        setWidth(scanner.nextLine());
+
         System.out.print("Введите высоту игрового поля (>3): ");
-        try {
-            line = scanner.nextLine();
-            int num = Integer.parseInt(line);
-            if (num < 4) {
-                throw new RuntimeException();
-            }
-            height = num;
-        } catch (Exception e) {
-            System.out.println("Введено недопустимое значение. Высота по умолчанию 20\n");
-        }
+        setHeight(scanner.nextLine());
+
         gameField = new char[height][width];
         for (char[] row : gameField) {
             Arrays.fill(row, DEAD);
         }
 
         System.out.print("Введите стартовое число живых клеток: ");
-        try {
-            line = scanner.nextLine();
-            int num = Integer.parseInt(line);
-            if (num < 4 || num > height*width) {
-                throw new RuntimeException();
-            }
-            aliveCell = num;
-        } catch (Exception e) {
-            System.out.println("Введено недопустимое значение. Число клеток по умолчанию 20\n");
-        }
+        setAliveCell(scanner.nextLine());
 
         int ac = aliveCell;
         while (ac > 0) {
@@ -152,6 +121,53 @@ public class GameOfLife {
                 gameField[x][y] = alive;
                 --ac;
             }
+        }
+    }
+
+    private static void setAliveChar(String line) {
+        if (line.length() > 1) {
+            System.out.println("Введено больше одного символа. Принят '"+line.charAt(0)+"'\n");
+            alive = line.charAt(0);
+        } else if (line.length() == 1) {
+            alive = line.charAt(0);
+        } else {
+            System.out.println("Не введен ни один символ. Используется символ по умолчанию '*'\n");
+        }
+    }
+
+    private static void setWidth(String line) {
+        try {
+            int num = Integer.parseInt(line);
+            if (num < 4) {
+                throw new RuntimeException();
+            }
+            width = num;
+        } catch (Exception e) {
+            System.out.println("Введено недопустимое значение. Ширина по умолчанию 20\n");
+        }
+    }
+
+    private static void setHeight(String line) {
+        try {
+            int num = Integer.parseInt(line);
+            if (num < 4) {
+                throw new RuntimeException();
+            }
+            height = num;
+        } catch (Exception e) {
+            System.out.println("Введено недопустимое значение. Высота по умолчанию 20\n");
+        }
+    }
+
+    private static void setAliveCell(String line) {
+        try {
+            int num = Integer.parseInt(line);
+            if (num < 4 || num > height*width) {
+                throw new RuntimeException();
+            }
+            aliveCell = num;
+        } catch (Exception e) {
+            System.out.println("Введено недопустимое значение. Число клеток по умолчанию 20\n");
         }
     }
 }
