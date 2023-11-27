@@ -31,7 +31,7 @@ public class GameOfLife {
         if (osName.contains("Windows")) {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } else {
-            Runtime.getRuntime().exec("clear");
+            new ProcessBuilder("/bin/bash", "-c", "clear").inheritIO().start().waitFor();
 
         }
         for (char[] row: gameField) {
