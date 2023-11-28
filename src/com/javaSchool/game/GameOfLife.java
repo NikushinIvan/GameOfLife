@@ -1,26 +1,29 @@
+package com.javaSchool.game;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class GameOfLife {
-    private static final char DEAD = '-';
-    private static int width = 20;
+    private final char DEAD = '-';
+    private int width = 20;
 
-    private static int height = 10;
-    private static char alive = '*';
-    private static boolean endGame = false;
-    private static int aliveCell = 30;
-    private static char[][] gameField;
-    private static char[][] oldField;
-    private static String osName;
-    public static void main(String[] args) throws InterruptedException, IOException {
+    private int height = 10;
+    private char alive = '*';
+    private boolean endGame = false;
+    private int aliveCell = 30;
+    private char[][] gameField;
+    private char[][] oldField;
+    private String osName;
+
+    public GameOfLife() {
         osName = System.getProperty("os.name");
 
         fieldInitialization();
-        startGame();
     }
 
-    private static void startGame() throws InterruptedException, IOException {
+
+    public void startGame() throws InterruptedException, IOException {
         while (!endGame) {
             viewField();
             nextGeneration();
@@ -28,7 +31,7 @@ public class GameOfLife {
         }
     }
 
-    private static void viewField() throws IOException, InterruptedException {
+    private void viewField() throws IOException, InterruptedException {
         if (osName.contains("Windows")) {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } else {
@@ -44,7 +47,7 @@ public class GameOfLife {
         System.out.println();
     }
 
-    private static void nextGeneration() {
+    private void nextGeneration() {
         char[][] newField = new char[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -74,7 +77,7 @@ public class GameOfLife {
         }
     }
 
-    private static int getNumberAliveNeighbors(int y, int x) {
+    private int getNumberAliveNeighbors(int y, int x) {
         int aliveNeighbors = 0;
         int startX = Math.max((x - 1), 0);
         int startY = Math.max((y - 1), 0);
@@ -92,7 +95,7 @@ public class GameOfLife {
         return aliveNeighbors;
     }
 
-    private static void fieldInitialization() {
+    private void fieldInitialization() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Введите символ для обозначения живой ячейки: ");
@@ -124,7 +127,7 @@ public class GameOfLife {
         }
     }
 
-    private static void setAliveChar(String line) {
+    private void setAliveChar(String line) {
         if (line.length() > 1) {
             System.out.println("Введено больше одного символа. Принят '"+line.charAt(0)+"'\n");
             alive = line.charAt(0);
@@ -135,7 +138,7 @@ public class GameOfLife {
         }
     }
 
-    private static void setWidth(String line) {
+    private void setWidth(String line) {
         try {
             int num = Integer.parseInt(line);
             if (num < 4) {
@@ -147,7 +150,7 @@ public class GameOfLife {
         }
     }
 
-    private static void setHeight(String line) {
+    private void setHeight(String line) {
         try {
             int num = Integer.parseInt(line);
             if (num < 4) {
@@ -159,7 +162,7 @@ public class GameOfLife {
         }
     }
 
-    private static void setAliveCell(String line) {
+    private void setAliveCell(String line) {
         try {
             int num = Integer.parseInt(line);
             if (num < 4 || num > height*width) {
